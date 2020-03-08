@@ -80,3 +80,31 @@ Docker Volumes:
 >> Docker volumes ls [it is checking docker avaliable volumes]
 >> Docker volumes create name [it is createing the new volumes]
 
+what is the use of Docker Volumes?
+--> In case containers are deleted it stores the data in volumes.When you create the new container we used same volume.
+	/var/lib/docker/volumes/[volumename]
+
+
+>> Docker volume create vol1
+>> Docker run --rm -dit --name nginx -v vol1:/var/www/html  ubuntu:16.04 bash [nginx is the container name, vol1 is the volume name, vol1:/var/www/html vol1 is mount to the that path, ubuntu:16.04 image name ]
+>> Docker run -it nginx bash [To install inside container nginx]
+	--> apt install -y nano
+	--> apt update && apt install nginx -y
+	after check --cd /var/www/html
+>> docker stop nginx [now container deleted]
+>> Docker exec -it nginx service status
+>> Docker exec -it nginx service start
+>> Docker run --rm -dit --name nginx -p 8001:80 -v vol1:/var/www/html mynginx:v1
+
+----> It is possible to use number of containers using singele volume
+----> volumes are requrid to DB server [Because of it's stores the data and freqvently change the data so we need volumes in DB server]
+----> Volumes are optional in App server and web server
+
+Difference B/W volumes and Bindmods?
+Volumes are managed by Docker.
+Bindmods are used to create one folder and add to the container.
+
+>> Docker cp file1 nginx1:/temp/file1 [In the docker copy option is also avaliabe]
+>> Docker logs Nginx1
+
+
