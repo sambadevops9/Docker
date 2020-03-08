@@ -1,0 +1,82 @@
+Docker Arcitecture:
+------------------
+
+==> Docker is platfom it is running and shiping the applications and container it is portable.
+==> Docker is not having any os. It is using EC2-machine os.
+==> Docker is state less. Any time it is deleted.
+==> Docker container having only libraries remaining files get from host os.
+==> Container is nothing but namespace and control groups to create one process. This process not having connection on another container this is called container.
+    we add memory and cpu using control groups.
+==> Basically there are having a few kurnal features.That let you isolate process from each other.
+
+==> Docker is container management.container having it only oneapplication it will take requried files from the host os.
+	-->It does not have any os.
+	-->fast performing.Because of not having os.
+	-->It has layerd architecture.
+
+what is vertualization?
+--> vertualization means run multiple OS on single physical syastem.
+--> vertualization every vm is indipendent.
+--> Every vm hav different creduntials
+--> VM's are not portable.
+
+"Docker Client" Docker client that we are going to use commands.
+"Docker server" That is responsible for creating images,running containers,etc.
+
+
+How to create container?
+--> we create container.we need one image that image pull from repository.
+    >> Docker Pull ubuntu:16.04  (Ubuntu is the image name 16.04 is the version) with out image we can't create container.
+    
+    >> Docker run --rm -it ubuntu:16.04  [Now it's move to the container. If you want move to the outside container Ctrl+PQ].
+    >> Inside container Ifconfig,ping,nano,curl not working. So as you are intrest install any packages example.
+	-- apt update
+	-- apt install -y inputils-ping net-tools wegt nano
+    >> After checking Ifconfig,ping www.google.com,curl -s http://google.com,nano "hello"
+
+How to Create container you have image?
+>>Docker run --rm -dit --name container1 y3478jh7848 (image ID)
+
+How to Run Container/How to connect container?
+    To run container using    >> Docker run --rm -it (image name)
+    To connect container      >> Docker exec -it (image name) bash
+
+
+Create container and change to image and push to Repository?
+	we have two ways
+		1.create container install update and convert to image and push to docker hub.
+		2.create docker file.
+    --> we create container.we need one image that image pull from repository.
+    >> Docker Pull ubuntu:16.04  (Ubuntu is the image name 16.04 is the version) with out image we can't create container.
+    
+    >> Docker run --rm -it ubuntu:16.04  [Now it's move to the container. If you want move to the outside container Ctrl+PQ].
+    >> Inside container Ifconfig,ping,nano,curl not working. So as you are intrest install any packages example.
+	-- apt update
+	-- apt install -y inputils-ping net-tools wegt nano
+    >> After checking Ifconfig,ping www.google.com,curl -s http://google.com,nano "hello"
+ Now Running container to move to image.
+    >> Docker ps
+    >> Docker commit ofob87dea2bc 6421/ubuntu9:v1
+		[ofob87dea2bc---------- this is container ID]
+		[6421/ubuntu9-----------we give 6421 is the repositry name and ubuntu9 is the name ofthe image]
+		[v1 --------------------this is tag]
+    >> Docker images [it shows above created image]
+    >> Docker login  [this is login to docker hub]
+    >> Docker push 6421/ubuntu9:v1 [now push to repositery .this 6421/ubuntu9 repository is created]
+
+
+
+Docker Networks:
+	this networks are used to our containers are communicate the this networks. Bridge is the default network we did not give any network in container. this is connected bridge net work.
+>> Docker network ls [it show's the list of networks]
+>> Docker network inspect Bride [It shows the ip of the bride network and details of the bridge network]
+>> Docker network create samba [now it's created samba network]
+>> Docker network prune [It is delete the networks not having sinage container]
+
+>> Docker run --rm -dit --name container1 --netwok samba y3478jh7848 (inage id)  [Now samba network is connected with container1]
+
+
+Docker Volumes:
+>> Docker volumes ls [it is checking docker avaliable volumes]
+>> Docker volumes create name [it is createing the new volumes]
+
