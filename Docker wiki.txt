@@ -90,6 +90,9 @@ what is the use of Docker Volumes?
 >> Docker run -it nginx bash [To install inside container nginx]
 	--> apt install -y nano
 	--> apt update && apt install nginx -y
+	>> service --status-all [check nginx service running or not]
+	>> service nginx start 
+	[now check localhost:8001(you are port)]
 	after check --cd /var/www/html
 >> docker stop nginx [now container deleted]
 >> Docker exec -it nginx service status
