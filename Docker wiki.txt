@@ -108,3 +108,40 @@ Bindmods are used to create one folder and add to the container.
 >> Docker logs Nginx1
 
 
+Docker file:
+------------
+	Daily life we are using this commands in docker file.
+1.From 2.LABEL 3.WORKDIR 4.RUN 5.ADD 6.COPY 7.EXPOSE 8.CMD 9.ENTRYPOINT
+
+======
+FROM ubuntu:16.04  (install the ubuntu:16.04 image)   
+LABEL OWNER="samba"(we given owner name)
+LABEL EMAIL="sambasivarao.yarram@gmail.com" (we give the email)
+ENV REPO="https://github.com/mavaric202/dockertest1.git" (ENV REPO is the we give the github repository)
+RUN apt update \    [RUN is to install requrid files in image]
+    && apt install -y nginx net-tools curl unzip wegt git \
+    && git clone ${REPO} /tmp/website \
+    && cp index.html /var/www/html/index.nginx-debian.html \
+    && cp scorekeepr.js /var/www/html \
+    && cp style.css /var/www/html
+CMD ["nginx","-g","daemon off;"] (this cmd is execute the after cretion of image)--cmd is the used to overrite the data
+
+=======================
+
+differenc B/W CMD and ENTRYPOINT?
+--> CMD is used to ovverite the data.
+--> ENTRYPOINT is used to as usel printing the data.Don't overrite.
+
+Docker EXPOSE: It is used internally connect and internaly open the container host.
+
+
+How to RUN docker file?
+==> nano dockerfile [it is used to write the docker file code in dockerfile]
+==> docker build -t 6421/dockerfile:v1 [Now build the docker file V1 is the tag(or)version]
+	--> with out -t we are not getting repository names
+==> docker images [6421/docker file is created]
+==> docker run -rm -dit -p 8001:80 6421/dockerfile:v1 [now container is created]
+==> docker run -rm -dit -p 8001:80 6421/dockerfile:v1 /bin/bash [ In case cmd file is ovverite container is not created. so using /bin/bash]
+
+Flow of creating container?
+==> Dockerfile--------->Image----------->Container
