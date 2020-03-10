@@ -138,7 +138,7 @@ differenc B/W CMD and ENTRYPOINT?
 Docker EXPOSE: It is used internally connect and internaly open the container host.
 
 
-How to RUN docker file?
+How to RUN docker file? [https://codefresh.io/docker-tutorial/build-docker-image-dockerfiles/]
 ==> nano dockerfile [it is used to write the docker file code in dockerfile]
 ==> docker build -t 6421/dockerfile:v1 [Now build the docker file V1 is the tag(or)version]
 	--> with out -t we are not getting repository names
