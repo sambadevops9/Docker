@@ -140,6 +140,8 @@ Docker EXPOSE: It is used internally connect and internaly open the container ho
 
 How to RUN docker file? [https://codefresh.io/docker-tutorial/build-docker-image-dockerfiles/]
 ==> nano dockerfile [it is used to write the docker file code in dockerfile]
+-------->sambasiva@LHLL0001:~/Docker$ docker build -t 6421/dockerfile:v1 .
+-------->create one directoty. Inside directory we add dockerfile
 ==> docker build -t 6421/dockerfile:v1 . [Now build the docker file V1 is the tag(or)version . is importent]
 	--> with out -t we are not getting repository names
 ==> docker images [6421/docker file is created]
