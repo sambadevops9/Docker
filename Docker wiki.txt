@@ -127,6 +127,8 @@ RUN apt update \    [RUN is to install requrid files in image]
     && cp index.html /var/www/html/index.nginx-debian.html \
     && cp scorekeepr.js /var/www/html \
     && cp style.css /var/www/html
+ADD dockertest1.tar.gz /var/www/html \ [add is used to download the remote place files and extract the local files ]
+COPY test1.html /var/www/html \ [this is just copy the files]
 CMD ["nginx","-g","daemon off;"] (this cmd is execute the after cretion of image)--cmd is the used to overrite the data
 
 =======================
