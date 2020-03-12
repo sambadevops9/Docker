@@ -152,3 +152,53 @@ How to RUN docker file? [https://codefresh.io/docker-tutorial/build-docker-image
 
 Flow of creating container?
 ==> Dockerfile--------->Image----------->Container
+
+
+
+Docker compose:
+---> it is only deploye single machine only.it is not possible to deploye multipule machines.
+---> It is used to overcome the manual deployement.
+---> It is used only developement purpse only.not usefull in prod envvironment.
+This compose is used to yml file:
+version 3.7
+service:
+	vote:
+		build:./vote
+		command:python app.py
+		volumes:
+			- ./vote/app
+		ports:
+			- "8000:80"
+		networks:
+			- front-tier
+			- back-tire
+	result:
+		same as above one [change the values,,,,,result and vote,worker,redis,db this are containers]
+	worker:
+	redis:
+	db:
+volumes:
+
+volumes for database only
+
+
+
+Docker swarm:
+	How to enable docker swarm:
+	---> creating 3 instens
+		docker-host 1(master/leader)192.168.0.11
+		docker-host-2(worker)192.168.0.12
+		docker-host 3(worker)192.168.0.13
+	---> first connect to the docker-host 1  [master]
+		>>docker swarm init [In case you getting error] use [docker swarm init --advertise-addr 192.168.0.11] this is run only 
+			response:
+				docker swarm join --token SWMTKN-1-3gqltvwvz40jawg4keahzppm1b7jqp8hqm7xizbz2jkyjoitx5-1qsjn6ms1kh3w0ij0vih1qkcj 192.168.0.11:2377
+	--->copy and paste the respones in docker-host-2 and docker-host-3
+	---> Check >>docker node ls [In master-host  it's 3 machines are active]
+>>Docker network ls [now creating 2 new networks docker_gwbridege and ovrlay] when the initilaze swarm it is creating.
+	---> when creatnig service it id defolt connect to overlay(ingress)
+	
+	-->Docker Demaon is a service it is used to comunicating the above 3 machines (docker swarm join-token worker)
+>> docker node pramote docker-host-2 docker-host-3 [this is used to change worker nodes to secound one of the master ]
+>> docker node demote docker-host-2 docker-host-3 [this is again go back to the worker]
+	--> masters are compalsery 3 to 5 machines
