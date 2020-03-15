@@ -202,3 +202,6 @@ Docker swarm:
 >> docker node pramote docker-host-2 docker-host-3 [this is used to change worker nodes to secound one of the master ]
 >> docker node demote docker-host-2 docker-host-3 [this is again go back to the worker]
 	--> masters are compalsery 3 to 5 machines
+	
+what is raft database? (https://docs.docker.com/engine/swarm/raft/)
+-->Having the same consistent state across the cluster means that in case of a failure, any Manager node can pick up the tasks and restore the services to a stable state. For example, if the Leader Manager which is responsible for scheduling tasks in the cluster dies unexpectedly, any other Manager can pick up the task of scheduling and re-balance tasks to match the desired state.
