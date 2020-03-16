@@ -217,3 +217,6 @@ what is raft database? (https://docs.docker.com/engine/swarm/raft/)
 ----> docker_gwbridege: it is internally connected to the containers [just check in >> docker network ls (docker_gwbridege avaliable in docker networks)]
 >>docker service create --name nginx --publish 8000:80 --mode globel 6421/newubuntu:V5
   [we have 3 hosts globel mode it will deploye one container for each host ]
+
+>> docker promote node2 [now it's promote to the leader]
+>> docker demote note2 [now it's demoted to tha leader]
