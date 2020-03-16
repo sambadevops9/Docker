@@ -205,3 +205,15 @@ Docker swarm:
 	
 what is raft database? (https://docs.docker.com/engine/swarm/raft/)
 -->Having the same consistent state across the cluster means that in case of a failure, any Manager node can pick up the tasks and restore the services to a stable state. For example, if the Leader Manager which is responsible for scheduling tasks in the cluster dies unexpectedly, any other Manager can pick up the task of scheduling and re-balance tasks to match the desired state.
+
+>>docker service create --name nginx --publish 8000:80 --replicas 3 6421/newubuntu:V5
+----> --replicas 3 [it is the createing the 3 nginx services]
+----> 6421/newubuntu:V5 [is the image name]
+
+>> docker service ps nginx [now it's display the running services]
+>> docker service rm nginx [now it's remove the running nginx services]
+>> docker service scale nginx=3 [now 3 nginx are running. we give 5 it's running 5 nginx's]
+
+----> docker_gwbridege: it is internally connected to the containers [just check in >> docker network ls (docker_gwbridege avaliable in docker networks)]
+>>docker service create --name nginx --publish 8000:80 --mode globel 6421/newubuntu:V5
+  [we have 3 hosts globel mode it will deploye one container for each host ]
