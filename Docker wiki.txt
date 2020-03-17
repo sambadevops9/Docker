@@ -198,12 +198,12 @@ Docker swarm:
 >>Docker network ls [now creating 2 new networks docker_gwbridege and ovrlay] when the initilaze swarm it is creating.
 	---> when creatnig service it id defolt connect to overlay(ingress)
 	
-	-->Docker Demaon is a service it is used to comunicating the above 3 machines (docker swarm join-token worker)
+	-->Docker Demaon is a service(multiple hosts) it is used to comunicating the above 3 machines (docker swarm join-token worker)
 >> docker node pramote docker-host-2 docker-host-3 [this is used to change worker nodes to secound one of the master ]
 >> docker node demote docker-host-2 docker-host-3 [this is again go back to the worker]
 	--> masters are compalsery 3 to 5 machines
 	
-what is raft database? (https://docs.docker.com/engine/swarm/raft/)
+What Is Raft Database? (https://docs.docker.com/engine/swarm/raft/)
 -->Having the same consistent state across the cluster means that in case of a failure, any Manager node can pick up the tasks and restore the services to a stable state. For example, if the Leader Manager which is responsible for scheduling tasks in the cluster dies unexpectedly, any other Manager can pick up the task of scheduling and re-balance tasks to match the desired state.
 
 >>docker service create --name nginx --publish 8000:80 --replicas 3 6421/newubuntu:V5
@@ -213,10 +213,76 @@ what is raft database? (https://docs.docker.com/engine/swarm/raft/)
 >> docker service ps nginx [now it's display the running services]
 >> docker service rm nginx [now it's remove the running nginx services]
 >> docker service scale nginx=3 [now 3 nginx are running. we give 5 it's running 5 nginx's]
+>> docker service update nginx --rplicas 3 [now 3 nginx are running.above and this both are same]
 
-----> docker_gwbridege: it is internally connected to the containers [just check in >> docker network ls (docker_gwbridege avaliable in docker networks)]
+----> Docker_Gwbridege: it is internally connected to the containers [just check in >> docker network ls (docker_gwbridege avaliable in docker networks)]
+
 >>docker service create --name nginx --publish 8000:80 --mode globel 6421/newubuntu:V5
   [we have 3 hosts globel mode it will deploye one container for each host ]
 
 >> docker promote node2 [now it's promote to the leader]
 >> docker demote note2 [now it's demoted to tha leader]
+
+Docker Swarm labels:
+-------------------
+
+	Two types fo services are avaliable.
+1.Service created with replicas --replicas 5
+2.Global mode --mode global
+	--> It will deploye one container for each host.
+
+--->replicas only using for up and down to the applications.(increasing or decreasing container number)
+    >>docker service update nginx01 --replicas 3 [now adding 3 containers.we give 5. it's running 5 containers]
+    >>docker service scale nginx01=5 [it's running 5 containers. I think both are same]
+
+Label Usage:
+------------
+
+	we have 5 hosts         Role       labels
+		ip-10-1-1-118 [manage]-->  manager
+		ip-10-1-1-119 [worker]-->  Dev
+		ip-10-1-1-120 [worker]-->  Dev
+		ip-10-1-1-121 [worker]-->  prod
+		ip-10-1-1-122 [worker]-->  prod
+	now we want add label 2 is Dev another 2 is prod.
+		>>docker node update --label-add dev=true ip-10-1-1-119
+		---> Now we adding dev label to ip-10-1-1-119 [worker] machine[now it's display swarm visulization dev=true]
+		>>docker node update --label-add dev=true ip-10-1-1-120
+		---> Now we adding dev label to ip-10-1-1-120 [worker] machine[now it's display swarm visulization dev=true]
+
+		
+		>>docker node update --label-add prod=true ip-10-1-1-121
+		---> Now we adding prod label to ip-10-1-1-121 [worker] machine[now it's display swarm visulization prod=true]
+		>>docker node update --label-add dev=true ip-10-1-1-122
+		---> Now we adding prod label to ip-10-1-1-122 [worker] machine[now it's display swarm visulization prod=true]
+
+
+Now we want deploye Dev only that time we using labels.
+
+>>docker service create --name devnginx --publish 8008:80 --constraint=node.labels.dev==true --replicas 4  6421/nginx:v1
+	[this case 4 containers deploye only on dev hosts. becase of we using labels]
+
+Now we want deploye containers in worker only[dev,prod in role]
+>>docker service create --name devnginx --publish 8009:80 --constraint=node.role==worker --replicas 4  6421/nginx:v1
+	[this case 4 containers deploye only on worker hosts. becase of we using role]
+
+
+Swarm Rolling Update:
+---------------------
+
+	Rolling update means containers are running on swarm cluster in different hosts (ex:6421/nginx:v1) is runing in continers. We want change
+(ex:6421/nginx:v2) version. this time don't down containers but same time update version v2. so that time we using swarm rolling update.
+
+
+>> docker service create --replicas 5 --publish 8003:80 --name nginx --update-perallelism 1 --update-delay 10s 6421/newubuntu:v1
+
+	[--update-perallelism 1 is the update one by one]
+	[--update-delay 10s is delay of 10sec.it means update first one delay of 10s to update secound one]
+
+>>docker service update --image 6421/newubuntu:v2
+	[it means remove old one and update new version]
+
+
+
+
+
