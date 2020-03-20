@@ -1,6 +1,13 @@
 Docker Arcitecture:
 ------------------
 
+ubuntu@ip-172-31-62-103:~$ sudo apt-get update
+ubuntu@ip-172-31-62-103:~$ sudo apt-get install docker.io
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
 ==> Docker is platfom it is running and shiping the applications and container it is portable.
 ==> Docker is not having any os. It is using EC2-machine os.
 ==> Docker is state less. Any time it is deleted.
