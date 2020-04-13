@@ -1,6 +1,13 @@
 Docker Arcitecture:
 ------------------
 
+ubuntu@ip-172-31-62-103:~$ sudo apt-get update
+ubuntu@ip-172-31-62-103:~$ sudo apt-get install docker.io
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
 ==> Docker is platfom it is running and shiping the applications and container it is portable.
 ==> Docker is not having any os. It is using EC2-machine os.
 ==> Docker is state less. Any time it is deleted.
@@ -281,8 +288,130 @@ Swarm Rolling Update:
 
 >>docker service update --image 6421/newubuntu:v2
 	[it means remove old one and update new version]
+	
+	
+	
+Docker swarm-trafik: this is used for controling trafic.
+--------------------
+
+	this docker swarm-trafic it is used to the we have 3 hostes in each host running on 2 containers 1 is nginx01 another one is nginx02. this nginx01 service 3 containers are add to the one target group (TCP-8000) another nginx02 service 3 containers are add to the another target group (TCP-9000).nginx01 adding one load balancer and nginx02 add one load balancer. this both are connecting 
+Route53(internet)-----------This entair process we are using 2 load balancers.so we spending more money. this problem overcome using
+ingress(this is traffic controler) now  we reduse load balancers and cost
+
+---trafic creation are avaliable in (gooledrive)
+How to create network in swarm?
+>>docker network create --drive=overlay traefik-net(trafic-net is the name)
+
+first craeting trafic service.
+
+>>docker service create --name trafic --constraint=node.role==manager --publish 80:80 --publish 8080:8080  --mount type=bind,
+source=/var/run/docker.sock,target=/var/run/docker.sock  --network traefik-net traefik:v1.6 --docker --docker.swarmnode 
+--docker.domain=traefik --docker.watch --web  {this is created only managernode onlay. it is running 8080 port}
+
+Now creating servives in under trafic-swarm
+
+>>docker service craete --name nginx01 --label trafic.port=80  --network traefic-net --label traefic.frontend.rule==host:nginx01.awscoffiesop.xyz  6421/newubuntu:v1
+
+>>docker service craete --name nginx02 --label trafic.port=80  --network traefic-net --label traefic.frontend.rule==host:nginx02.awscoffiesop.xyz  6421/newubuntu:v3
+
+>>docker service craete --name nginx03 --label trafic.port=80  --network traefic-net --label traefic.frontend.rule==host:nginx03.awscoffiesop.xyz  6421/newubuntu:v1
 
 
+Docker stack:   {in github:dockersamples/example-votingapp}check dockerstack.yml
+-------------
+
+stack:stack don't do the build.it having deploye
+compose:build the image and up the application
+
+git clone voting app
+>>nano docker-stack.yml
+we can check docker composeavaliable are not. incase not avaliable /github.com/docker/compose/release
+
+run in terminal: curl -l https://github.com/docker/comopose/releases/download/1.25.4/docker-compose-'uname -s' -
+
+>>docker-compose up [this case pull and build the images] >>docker-compose down
+
+in case file name is docker-compose-window.yml
+>>docker-compose -f docker-compose-window.yml up -d
+
+docker-stack(it is only used docker swarm cluster) docker-stack.yml
+
+>>docker stack deploy --compose-file docker-stack.yml vote (this vote name is our choice)
+>>docker stack rm vote (now delete entaier vote)
+
+---> In compose time containers are createing one host only. In case one host facing any problem entair application is down.
+---> In stack deploye creating multiple containers in multiple hosts. in case any container deleted again creating.
+
+
+Docker secrets:
+--------------[it stores the sensitive data](check google drive)
+
+create one service assign secrets:
+
+>>docker secret ls
+>>echo "corona@345" | docker secret create pass1 -
+>>echo "mask@543" | docker secret create pass2 -
+>>docker secret ls
+>>docker secret inspect pass2 [it just give the information not showing password]
+
+
+>>docker service create --neame hello --secrets db_dba_password --secret db_reset_password -p 8000:80 --replicas 6 6421/newubuntu:v1
+>>docker exec -it hello bash
+-->ls
+-->cat /run/secrets/db_dba_password [now showing password]
+	[this password creating container memory only not in volumes]
+	
+Stack file also creating secrets(check google drive)
+
+
+Resurvation and Limits:
+----------------------
+this reservations and limits are used to mention menimum reserve size of memory and maximum size of memory limit.
+
+resourse: [using compose file]
+	resurvations:
+		memory:128M {this container compulsary we give 128 M}
+	limits:
+		memory:256M {this container limt max 256M} we reach container 256 now it's automaticaly restart.
+		
+using command line:
+>>docker service create --name stress --limit-memory 400 M --replicas 3 6421/newubuntu:v1
+>>docker service create --name stress --reserve-memory 100M --limit-memory 400 M  --replicas 3 sreeharsha/strees:256 copy
+
+
+Docker Config:
+-------------
+
+>>docker config create index1 index-1.html
+>>docker config create index2 index-2.html
+
+>>docker service create --name nginx01 --config src=index1,target=/user/share/nginx/html/index.html -p 8000:80 
+ sreeharshv/rollingupdate:v3
+ 
+ Updateing--
+ >>docker service update nginx01 --config-rn index1 --config-add src=index2,target=/user/share/nginx/html/index.html
+ 
+ 
+ HealthCheck:
+ -----------
+ 
+ Creating dockerfile--
+ 
+ FROM nginx:latest
+ LABEL NAME ="samba"
+ MAINTAINER samba@dgg.com
+ COPY index.html /usr/share/nginx/html/
+ COPY screkeeper.js /usr/share/nginx/html/
+ COPY style.css /usr/share/nginx/html/
+ RUN apt update && apt install -y curl
+ HEALTHCHECK CMD CURL --fail http://localhost:80/ || exit1
+ 
+ >>docker build -t 6421/healthcheck:v1
+ >>docker push 6421/healthcheck:v1
+ 
+ >>docker run --rm -dit --name samba -p 8000:80 6421/healthcheck:v1
+ 
+ >>docker service create --name health01 -p 9000:80 replicas 3 6421/healthcheck:v1
 
 
 
