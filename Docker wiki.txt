@@ -8,6 +8,9 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 
+What is container?
+--Basically there are a few new Linux kernel features (“namespaces” and “cgroups”) that let you isolate processes from each other. When you use those features, you call it “containers”.
+
 ==> Docker is platfom it is running and shiping the applications and container it is portable.
 ==> Docker is not having any os. It is using EC2-machine os.
 ==> Docker is state less. Any time it is deleted.
