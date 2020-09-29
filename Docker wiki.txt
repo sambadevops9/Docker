@@ -169,7 +169,7 @@ Docker compose:
 ---> it is only deploye single machine only.it is not possible to deploye multipule machines.
 ---> It is used to overcome the manual deployement.
 ---> It is used only developement purpse only.not usefull in prod envvironment.
-This compose is used to yml file:
+This compose is used to yml file:(https://github.com/dockersamples/example-voting-app)
 version 3.7
 service:
 	vote:
