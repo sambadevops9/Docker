@@ -8,6 +8,16 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 
+what is docker?
+-- docker is a platfom or ecosyatem around creating and running containers.
+
+---docker ecosystem
+   >>Docker client
+   >>Docker server
+   >>docker image
+   >>docker compose
+   >>docker hub
+
 why use Docker?
 -- Docker makes it really easy to install and run software without worrying about setup or dependencies.
 
