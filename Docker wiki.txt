@@ -8,6 +8,9 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 
+why use Docker?
+-- Docker makes it really easy to install and run software without worrying about setup or dependencies.
+
 What is container?
 --Basically there are a few new Linux kernel features (“namespaces” and “cgroups”) that let you isolate processes from each other. When you use those features, you call it “containers”.
 
