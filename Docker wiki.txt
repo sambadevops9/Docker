@@ -24,7 +24,10 @@ why use Docker?
 What is container?
 --Basically there are a few new Linux kernel features (“namespaces” and “cgroups”) that let you isolate processes from each other. When you use those features, you call it “containers”.
 
-==> Docker is platfom it is running and shiping the applications and container it is portable.
+difference between docker swarm and docker-compose?
+>>The difference lies mostly in the backend, where docker-compose deploys container on a single Docker host, Docker Swarm deploys it across multiple nodes. Loosely speaking, it can still do most things that docker-compose can but it scales it across multiple Docker hosts.
+
+==> Docker is platfom it is running and shipping the applications and container it is portable.
 ==> Docker is not having any os. It is using EC2-machine os.
 ==> Docker is state less. Any time it is deleted.
 ==> Docker container having only libraries remaining files get from host os.
