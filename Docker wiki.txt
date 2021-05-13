@@ -11,6 +11,9 @@ newgrp docker
 what is docker?
 -- docker is a platfom or ecosyatem around creating and running containers.
 
+what is docker image?
+--A Docker image is a read-only template that contains a set of instructions for creating a container that can run on the Docker platform
+
 ---docker ecosystem
    >>Docker client
    >>Docker server
