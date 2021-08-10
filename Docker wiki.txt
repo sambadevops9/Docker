@@ -8,6 +8,9 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
 
+Q74) How to deploy docker container to aws?
+Amazon provides the service called Amazon Elastic Container Service; By using this creating and configuring the task definition and services we will launch the applications.
+
 what is docker?
 -- docker is a platfom or ecosyatem around creating and running containers.
 
