@@ -1,0 +1,68 @@
+Pipeline {
+    options {
+            ansicolor('xterm')
+    }
+    agent {labelm 'jenkins_slave01' }
+    environment {
+        registry            = "escoacr.azure.io" (Name)
+        registryCreduntials = 'acr_creds_esco'
+        dockerfile          = 'Dockerfile'
+        registryRepo        = "/wmasss/wmass_ant"
+        CommitId            = 'False'
+        imageURI            = "${registry}${registryRepo}:${env.BUILD_NUMBER}"
+        VeraAppid           = "${git_repo}-${env.BUILD_NUMBER}"
+        VeraAppName         = "Demand Aggretion"
+        AbortOnFail         = false
+        CompliancePolicy    = 'warn'
+        VulnerabilityPolicy = 'warn'
+        RemoveImageOnPublish= false
+        logLevel    = 'debug'
+     }
+     parameters {
+          choice(name: 'env', choice: 'dev\nqa\npprd', description: 'environment to be built')
+          choice(name: 'snapshot', choices: ['build-server-release-candidate', 'build-server-snapshot'], description: 'snapshotto build')
+     }
+     stages {
+          stage('Build') {
+              steps {
+                  dir ("wmass_ant") {
+                      sh 'mvn -B -DshipTests -Denv=${env} clean package'
+                      sh 'mv ear/target/*.ear target/wmass.ear'
+                  }
+              }
+          }
+          stage('Test') {
+              steps {
+                dir ("wmass_ant") {
+                    sh 'mvn -Denv=${env} test'
+                }
+              }
+           }
+           stage('Veracode Scan') {
+              steps {
+                script {
+                  albBuild.verracodescanEar(VeraAppid, AbortOnFail, VeraAppName)
+                }
+              }
+            }
+            stage('Docker Build Image') {
+                steps{
+                    script {
+                        DockerImage = albBuild.buildDockertaggedImage(registry, registryRepo, dockerfile)
+                    }
+                 }
+             }
+             stage('Twistlock Analysis') {
+                steps {
+                  script {
+                       albBuild.twistscanDockerImage(imageURI, loglevel)
+                   }
+                 }
+              }
+              stage('dockr push image to ACR') {
+                  steps{
+                      script {
+                          albBuild.publishdockerImage(registry, registryCredential, dockerimage, imageURI, removeafterPublish = RemoveImageOnPublish)
+                       }
+                   }
+               }
