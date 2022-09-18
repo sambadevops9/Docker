@@ -1,0 +1,15 @@
+From (Image name)
+#Adding applicaton specific group and user
+RUN groupadd -g 999 wmasss-grp && useradd -r -u 999 -g root wmassss
+#Copying application dependency jars to app directory
+COPY wmasss_ant/Library/*.jar /usr/local/tomee/lib/
+#Copying application ear to app directory
+COPY wmasss_ant/target/*.ear /usr/local/tomee/webapps
+#Changing the user and/or group ownership of an app directory
+RUN chown wmasss:wmasss-grp /usr/local/tomee/ -R
+#Exposing the container port
+EXPOSE 8080
+#Switching user to application user from root
+USER wmasss
+#starting the service
+CMD /usr/local/tomee/bin/catalina.sh run
