@@ -66,3 +66,16 @@ Pipeline {
                        }
                    }
                }
+               post {
+               failure {
+                  script {
+                     albNotify.emailNotify()
+                     }
+                  }
+                  Cleanup {
+                    script {
+                        albBuild.removeDockerImage(imageURI)
+                     }
+                   }
+                  }
+                 }
