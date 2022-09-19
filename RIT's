@@ -1,0 +1,17 @@
+Resource Group.
+Key Vaults
+Namespace
+AKS RBAC Access
+SSL Certs
+SSL Certs AGW
+DNS Request
+RBAC Member group creation
+RBAC admin group creation
+ADD Cluster user role to admin group
+Request access for Jenkins
+Request for CI pipeline creation
+CD pipeline in spinnaker
+Firewall enable for Azure SQL MI
+Firewall enable for Kafka server
+SSL Cert for Kafka server
+Firewall enable for DB2
