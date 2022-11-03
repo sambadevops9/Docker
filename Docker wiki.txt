@@ -167,8 +167,10 @@ CMD ["nginx","-g","daemon off;"] (this cmd is execute the after cretion of image
 
 differenc B/W CMD and ENTRYPOINT?
 --> CMD is used to ovverite the data.
+    Using a CMD command, you will be able to set a default command. This will be executed if you run a particular container 	     without specifying some command. In case you specify a command while running a docker container, the default one will be         ignored. Note that if you specify more than one CMD instruction in your dockerfile, only the last one will be executed.
 --> ENTRYPOINT is used to as usel printing the data.Don't overrite.
-
+    It looks similar to a CMD command. However, the difference is that it does not ignore the parameters when you run a container with CLI parameters.
+    RUN vs CMD vs Entrypoint in Docker (tutorialspoint.com)
 Docker EXPOSE: It is used internally connect and internaly open the container host.
 
 
