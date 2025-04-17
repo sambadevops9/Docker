@@ -441,4 +441,10 @@ Docker Config:
  >>docker service create --name health01 -p 9000:80 replicas 3 6421/healthcheck:v1
 
 
+==================================================================================
+Delete all images on the host  >> docker rmi -f $(docker images -aq)  if incase having 20 images
+
+Remove containers >> docker stop $(docker ps -a -q)
+
+
 
