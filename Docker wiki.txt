@@ -446,5 +446,11 @@ Delete all images on the host  >> docker rmi -f $(docker images -aq)  if incase 
 
 Remove containers >> docker stop $(docker ps -a -q)
 
+Delete all images on the host >> docker rmi $(docker images -aq)
+
+Deploy a mysql database using the mysql image and name it mysql-db.
+Set the database password to use db_pass123. Lookup the mysql image on Docker Hub and identify the correct environment variable to use for setting the root password.
+>>Run the command: docker run -d -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysql-db mysql
+To know the env field from within a mysql-db container, run docker exec -it mysql-db env
 
 
